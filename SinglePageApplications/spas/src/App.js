@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Router, navigate } from '@reach/router';
+
 import firebase from './components/Firebase' 
 import Home from './components/Home'
 import Welcome from './components/Welcome'
@@ -8,6 +9,7 @@ import Login from './components/Login';
 import Register from './components/Register'
 import Meetings from './components/Meeting'
 import CheckIn from './components/CheckIn'
+import Attendees from './components/Attendees'
 
 
 
@@ -124,6 +126,8 @@ class App extends Component
         <Home path='/' user={this.state.user} />
         <Login path='/login' />
         <Meetings path='/meetings'  addMeeting={this.addMeeting}
+         meetings={this.state.meetings} userID={this.state.userID} />
+        <Attendees path='/attendees/:userID/:meetingID'  AdminUser={this.state.userID}
          meetings={this.state.meetings} userID={this.state.userID} />
         <CheckIn path='/checkin/:userID/:meetingID' />
         {/* Passes a local function into a subcomponent */}
