@@ -7,6 +7,7 @@ import Navigation from './components/Navigation'
 import Login from './components/Login';
 import Register from './components/Register'
 import Meetings from './components/Meeting'
+import CheckIn from './components/CheckIn'
 
 
 
@@ -124,6 +125,7 @@ class App extends Component
         <Login path='/login' />
         <Meetings path='/meetings'  addMeeting={this.addMeeting}
          meetings={this.state.meetings} userID={this.state.userID} />
+        <CheckIn path='/checkin/:userID/:meetingID' />
         {/* Passes a local function into a subcomponent */}
         <Register path='/register' registerUser={this.registerUser} /> 
       </Router>
