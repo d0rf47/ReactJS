@@ -14,6 +14,9 @@ class CheckIn extends Component
             email : '',
             displayName : ''
         }
+        
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     };
 
     handleChange = (e) =>
@@ -36,7 +39,8 @@ class CheckIn extends Component
         .ref(`meetings/${this.props.userID}/${this.props.meetingID}/attendees`)
         ref.push({
             attendeeName : this.state.displayName,
-            attendeeEmail : this.state.email
+            attendeeEmail : this.state.email,
+            star : false
         });
         navigate(`/attendees/${this.props.userID}/${this.props.meetingID}`);
     }

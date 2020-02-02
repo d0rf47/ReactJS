@@ -11,10 +11,12 @@ class Attendees extends Component
         this.state = 
         {
             displayAttendees : [],
-
+            searchQuery : '',
         }
+        this.handleChange = this.handleChange.bind(this);
     }
 
+    
     componentDidMount()
     {
         const ref = firebase.database()
@@ -29,7 +31,8 @@ class Attendees extends Component
                 attendeesList.push({
                     attendeesID : item,
                     attendeeName : attendees[item].attendeeName,
-                    attendeeEmail : attendees[item].attendeeEmail
+                    attendeeEmail : attendees[item].attendeeEmail,
+                    star : attendees[item].star,
                 });
             }
 
@@ -37,11 +40,27 @@ class Attendees extends Component
                 displayAttendees : attendeesList
             });
         })
-    }
+    };
 
+    handleChange = (e) =>
+    {
+        const itemName = e.target.name;
+        const itemVal =  e.target.value;
+
+        this.setState(
+            {
+                [itemName] : itemVal
+            }
+        )
+    };
 
     render()
     {
+
+        const filter = item =>
+         item.attendeeName.toLowerCase()
+         .match(this.state.searchQuery.toLowerCase() )&& true;
+        const filteredAttendees = this.state.displayAttendees.filter(filter)
         return(
             <>
                 <div className="container mt-4 justify-content-center">
@@ -50,9 +69,27 @@ class Attendees extends Component
                             <h1 className="font-weight-light text-center">
                                 Attendees
                             </h1>
+
+                            <div className='card bg-light mb-4'>
+                                <div className='card-body text-center'>
+                                    <input 
+                                    type='text' 
+                                    className='form-control'
+                                    name='searchQuery' 
+                                    value={this.state.searchQuery}  
+                                    placeholder='Search Attendees'
+                                    onChange={this.handleChange}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <AttendeeList userID={this.props.userID} attendees={this.state.displayAttendees} />
+                    <AttendeeList 
+                     userID={this.props.userID} 
+                     adminUser={this.props.adminUser}
+                     attendees={filteredAttendees}
+                     meetingID={this.props.meetingID}
+                     />
                 </div>
             </>
         )

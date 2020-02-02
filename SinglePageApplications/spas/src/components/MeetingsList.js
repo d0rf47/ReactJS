@@ -28,11 +28,11 @@ class MeetingsList extends Component
                                  onClick={e => this.deleteMeeting(e, item.meetingID)}>
                                      <GoTrashcan />                        
                              </button>
-                             <button className='btn btn-sm btn-outline-secondary' title="Attendee List"
+                             <button className='btn btn-sm btn-outline-secondary' title="Check In"
                                  onClick={ ()=> navigate(`checkin/${this.props.userID}/${item.meetingID}`) }>
                                      <FaLink />                        
                              </button>
-                             <button className='btn btn-sm btn-outline-secondary' title="Meeting List"
+                             <button className='btn btn-sm btn-outline-secondary' title="Meeting Attendees"
                                  onClick={ ()=> navigate(`attendees/${this.props.userID}/${item.meetingID}`) }>
                                      <GoListUnordered />                        
                              </button>

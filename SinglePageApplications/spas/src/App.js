@@ -45,7 +45,7 @@ class App extends Component
               //Adds all meetings from the user db into an array 
               for(let item in meetings)
               {
-                meetingList.push({
+                  meetingList.push({
                   meetingID : item,
                   meetingName : meetings[item].meetingName
                 });
@@ -127,7 +127,7 @@ class App extends Component
         <Login path='/login' />
         <Meetings path='/meetings'  addMeeting={this.addMeeting}
          meetings={this.state.meetings} userID={this.state.userID} />
-        <Attendees path='/attendees/:userID/:meetingID'  AdminUser={this.state.userID}
+        <Attendees path='/attendees/:userID/:meetingID'  adminUser={this.state.userID}
          meetings={this.state.meetings} userID={this.state.userID} />
         <CheckIn path='/checkin/:userID/:meetingID' />
         {/* Passes a local function into a subcomponent */}
