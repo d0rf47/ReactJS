@@ -6,7 +6,7 @@ class Navigation extends Component
 {
     render()
     {
-        const {user}  =  this.props;
+        const {user, logOutUser}  =  this.props;
      
             return(
             <>
@@ -33,7 +33,7 @@ class Navigation extends Component
                                 </Link>
                             )}
                             {user && (
-                                <Link className="nav-item nav-link" to="/login">
+                                <Link className="nav-item nav-link" to="/login"  onClick={ e => logOutUser(e)}>
                                 log out
                                 </Link>
                             )}

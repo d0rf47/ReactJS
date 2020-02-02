@@ -12,28 +12,28 @@ import Meetings from './components/Meeting'
 
 class App extends Component 
 {
-  state =
-  {
-    user : null,
-    displayName : null,
-    userID : null
-  };
-
-
+  constructor() {
+    super();
+    this.state = {
+      user: null,
+      displayName: null,
+      userID: null
+    };
+  }
+  
   componentDidMount()
   {
-    //gets a reference to the user stored in the DB
-    const ref = firebase.database().ref('user');
-
-    ref.on('value', snapshot =>
-    {
-      let fbUser = snapshot.val();
-      this.setState(
+      firebase.auth().onAuthStateChanged(fbUser =>
         {
-          user:fbUser
-        }
-      )
-    })
+          if(fbUser)
+          {
+            this.setState({
+              user: fbUser,
+              displayName : fbUser.displayName,
+              userID : fbUser.userID
+            })
+          }
+        })
   };
 
   // Called from the Register Component
@@ -60,12 +60,27 @@ class App extends Component
       })
   }
 
+  logOutUser = e =>
+  {
+    e.preventDefault();
+    this.setState({
+      displayName : null,
+      userID : null,
+      user : null
+    });
+
+    firebase.auth().signOut().then(() =>
+    {
+      navigate('/login');
+    })
+  
+  }
   render(){
     return (
       <>
-      <Navigation user={this.state.user} />
+      <Navigation user={this.state.user} logOutUser={this.logOutUser} />
         {this.state.user && 
-        <Welcome user={this.state.displayName} />
+        <Welcome userName={this.state.displayName} logOutUser={this.logOutUser} />
         }        
       <Router>
         <Home path='/' user={this.state.user} />
