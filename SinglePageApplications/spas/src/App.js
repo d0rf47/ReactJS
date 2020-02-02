@@ -30,10 +30,36 @@ class App extends Component
             this.setState({
               user: fbUser,
               displayName : fbUser.displayName,
-              userID : fbUser.userID
+              userID : fbUser.uid
             })
+            const meetingRef = firebase.database().ref('meetings/' + fbUser.uid);
+            //get an object containing the users collection of meetings
+            meetingRef.on("value", snapshot =>
+            {
+              let meetings = snapshot.val();
+              let meetingList = [];
+
+              //Adds all meetings from the user db into an array 
+              for(let item in meetings)
+              {
+                meetingList.push({
+                  meetingID : item,
+                  meetingName : meetings[item].meetingName
+                });
+              }
+
+              this.setState({
+                meetings : meetingList,
+                meetingCount : meetingList.length
+              })
+            })
+          }          
+          else
+          {
+            this.setState({user:null})
           }
         })
+      
   };
 
   // Called from the Register Component
@@ -75,6 +101,17 @@ class App extends Component
     })
   
   }
+
+  addMeeting = (meetingName) =>
+  {
+    //used to tell the database where to write to
+    const ref = firebase
+    .database()
+    //specifies where to store the meetingName
+    .ref(`meetings/${this.state.user.uid}`);
+    //pushes the new item into the db
+    ref.push({meetingName : meetingName });
+  }
   render(){
     return (
       <>
@@ -85,7 +122,8 @@ class App extends Component
       <Router>
         <Home path='/' user={this.state.user} />
         <Login path='/login' />
-        <Meetings path='/meetings' />
+        <Meetings path='/meetings'  addMeeting={this.addMeeting}
+         meetings={this.state.meetings} userID={this.state.userID} />
         {/* Passes a local function into a subcomponent */}
         <Register path='/register' registerUser={this.registerUser} /> 
       </Router>
