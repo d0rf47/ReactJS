@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import firebase from './Firebase';
 
+
+import firebase from './Firebase';
 import AttendeeList from './AttendeeList'
+import { FaUndo, FaRandom } from 'react-icons/fa';
 
 class Attendees extends Component 
 {
@@ -12,8 +14,11 @@ class Attendees extends Component
         {
             displayAttendees : [],
             searchQuery : '',
+            allAttendees : []
         }
         this.handleChange = this.handleChange.bind(this);
+        this.resetQuery = this.resetQuery.bind(this);
+        this.chooseRandom = this.chooseRandom.bind(this);
     }
 
     
@@ -37,7 +42,8 @@ class Attendees extends Component
             }
 
             this.setState({
-                displayAttendees : attendeesList
+                displayAttendees : attendeesList,
+                allAttendees : attendeesList
             });
         })
     };
@@ -53,6 +59,23 @@ class Attendees extends Component
             }
         )
     };
+
+    resetQuery =() =>
+    {
+        this.setState({
+            searchQuery : '',
+            displayAttendees : this.state.allAttendees
+        });
+    };
+
+    chooseRandom = () =>
+    {
+        const randomNum = Math.floor(Math.random() * this.state.allAttendees.length);
+        this.resetQuery();
+        this.setState({
+            displayAttendees : [this.state.allAttendees[randomNum]]
+        })
+    }
 
     render()
     {
@@ -72,7 +95,8 @@ class Attendees extends Component
 
                             <div className='card bg-light mb-4'>
                                 <div className='card-body text-center'>
-                                    <input 
+                                <div className='input-group input-group-lg'>
+                                <input 
                                     type='text' 
                                     className='form-control'
                                     name='searchQuery' 
@@ -80,6 +104,23 @@ class Attendees extends Component
                                     placeholder='Search Attendees'
                                     onChange={this.handleChange}
                                     />
+                                <div className='input-group-append'>
+                                    <button 
+                                    className='btn btm-sm btn-outline-info' 
+                                    title='Reset Query'
+                                    onClick={this.resetQuery}
+                                    >
+                                    <FaUndo />
+                                    </button>
+                                    <button 
+                                    className='btn btm-sm btn-outline-info' 
+                                    title='Random Attendee'
+                                    onClick={this.chooseRandom}
+                                    >
+                                    <FaRandom />
+                                    </button>
+                                </div>
+                                </div>                                    
                                 </div>
                             </div>
                         </div>
